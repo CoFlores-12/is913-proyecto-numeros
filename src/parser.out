@@ -1,0 +1,94 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Grammar
+
+Rule 0     S' -> expression
+Rule 1     expression -> INTEGER BIN
+Rule 2     expression -> INTEGER HEX
+Rule 3     expression -> INTEGER OCT
+Rule 4     expression -> INTEGER ROM
+Rule 5     expression -> INTEGER INTEGER
+
+Terminals, with rules where they appear
+
+BIN                  : 1
+HEX                  : 2
+INTEGER              : 1 2 3 4 5 5
+OCT                  : 3
+ROM                  : 4
+error                : 
+
+Nonterminals, with rules where they appear
+
+expression           : 0
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . expression
+    (1) expression -> . INTEGER BIN
+    (2) expression -> . INTEGER HEX
+    (3) expression -> . INTEGER OCT
+    (4) expression -> . INTEGER ROM
+    (5) expression -> . INTEGER INTEGER
+
+    INTEGER         shift and go to state 2
+
+    expression                     shift and go to state 1
+
+state 1
+
+    (0) S' -> expression .
+
+
+
+state 2
+
+    (1) expression -> INTEGER . BIN
+    (2) expression -> INTEGER . HEX
+    (3) expression -> INTEGER . OCT
+    (4) expression -> INTEGER . ROM
+    (5) expression -> INTEGER . INTEGER
+
+    BIN             shift and go to state 4
+    HEX             shift and go to state 5
+    OCT             shift and go to state 6
+    ROM             shift and go to state 7
+    INTEGER         shift and go to state 3
+
+
+state 3
+
+    (5) expression -> INTEGER INTEGER .
+
+    $end            reduce using rule 5 (expression -> INTEGER INTEGER .)
+
+
+state 4
+
+    (1) expression -> INTEGER BIN .
+
+    $end            reduce using rule 1 (expression -> INTEGER BIN .)
+
+
+state 5
+
+    (2) expression -> INTEGER HEX .
+
+    $end            reduce using rule 2 (expression -> INTEGER HEX .)
+
+
+state 6
+
+    (3) expression -> INTEGER OCT .
+
+    $end            reduce using rule 3 (expression -> INTEGER OCT .)
+
+
+state 7
+
+    (4) expression -> INTEGER ROM .
+
+    $end            reduce using rule 4 (expression -> INTEGER ROM .)
+
