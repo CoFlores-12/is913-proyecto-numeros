@@ -16,27 +16,38 @@ t_BIN = r'binario+'
 t_HEX = r'hexadecimal+'
 t_OCT = r'octal+'
 t_ROM = r'romano+'
-t_ALT = r'alternativo+'
-t_RAND = r'aleatorio+'
 
 t_ignore = ' \t'
 
+lexer_errors = []
+parser_errors = []
+
 def t_error(t):
-    print(f"Token desconocido: '{t.value[0]}'")
+    global lexer_errors
+    lexer_errors.append({"linea": t.lineno, "tipo": "Token desconocido", "valor": t.value})
     t.lexer.skip(1)
 
 lexer = lex.lex()
 
-def p_expression_integer_base(p):
-    '''expression   : INTEGER BIN
-                    | INTEGER HEX
-    				| INTEGER OCT
-    			    | INTEGER ROM
-                    | INTEGER ALT
-                    | INTEGER RAND'''
+def p_expression_integer_base_BIN(p):
+    '''expression   : INTEGER BIN'''
     integer = int(p[1])
-    base_str = p[2]
-    p[0] = convert_to_base(integer, base_str)
+    p[0] = bin(integer)[2:]
+
+def p_expression_integer_base_HEX(p):
+    '''expression   : INTEGER HEX'''
+    integer = int(p[1])
+    p[0] = hex(integer)[2:]
+
+def p_expression_integer_base_OCT(p):
+    '''expression   : INTEGER OCT'''
+    integer = int(p[1])
+    p[0] = oct(integer)[2:]
+
+def p_expression_integer_base_ROM(p):
+    '''expression   : INTEGER ROM'''
+    integer = int(p[1])
+    p[0] = to_roman(integer) 
 
 def p_expression_integer_integer(p):
     '''expression : INTEGER INTEGER'''
@@ -45,22 +56,11 @@ def p_expression_integer_integer(p):
     p[0] = convert_to_base_int(number, base)
 
 def p_error(p):
+    global parser_errors
     if p:
-        return (f"Error de sintaxis en la entrada en '{p.value}'")
+        parser_errors.append({"tipo": "Error de sintaxis", "valor": p.value})
     else:
-        return ("Error de sintaxis al final de la entrada")
-
-def convert_to_base(number, base_str):
-    if base_str == "binario":
-        return bin(number)[2:]  
-    elif base_str == "hexadecimal":
-        return hex(number)[2:]  
-    elif base_str == "octal":
-        return oct(number)[2:] 
-    elif base_str == "romano":
-        return to_roman(number) 
-    else:
-        return f"Base {base_str} no soportada"
+        parser_errors.append({"tipo": "Error de sintaxis", "valor": "Final de la entrada"})
 
 def to_roman(number):
     roman_numerals = {
@@ -87,7 +87,6 @@ def convert_to_base_int(number, base):
 parser = yacc.yacc()
 
 # SERVER SIDE
-
 app = Flask(__name__)
 
 @app.route('/')
@@ -97,4 +96,16 @@ def index():
 
 @app.route('/parse/<cadena>')
 def parse(cadena):
-    return jsonify(parser.parse(cadena.lower()))
+    global lexer_errors
+    global parser_errors
+    lexer_errors = []
+    parser_errors = []
+    try:
+        resultado = parser.parse(cadena.lower())
+        return jsonify({
+            "resultado": resultado, 
+            "Errores_lexicos": lexer_errors,
+            "errores_sintacticos": parser_errors
+        })
+    except Exception as e:
+        return jsonify({"error": str(e)})

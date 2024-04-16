@@ -6,7 +6,7 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'BIN HEX INTEGER OCT ROMexpression   : INTEGER BIN\n                    | INTEGER HEX\n    \t\t\t\t| INTEGER OCT\n    \t\t\t    | INTEGER ROMexpression : INTEGER INTEGER'
+_lr_signature = 'BIN HEX INTEGER OCT ROMexpression   : INTEGER BINexpression   : INTEGER HEXexpression   : INTEGER OCTexpression   : INTEGER ROMexpression : INTEGER INTEGER'
     
 _lr_action_items = {'INTEGER':([0,2,],[2,3,]),'$end':([1,3,4,5,6,7,],[0,-5,-1,-2,-3,-4,]),'BIN':([2,],[4,]),'HEX':([2,],[5,]),'OCT':([2,],[6,]),'ROM':([2,],[7,]),}
 
@@ -27,9 +27,9 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> expression","S'",1,None,None,None),
-  ('expression -> INTEGER BIN','expression',2,'p_expression_integer_base','server.py',29),
-  ('expression -> INTEGER HEX','expression',2,'p_expression_integer_base','server.py',30),
-  ('expression -> INTEGER OCT','expression',2,'p_expression_integer_base','server.py',31),
-  ('expression -> INTEGER ROM','expression',2,'p_expression_integer_base','server.py',32),
-  ('expression -> INTEGER INTEGER','expression',2,'p_expression_integer_integer','server.py',38),
+  ('expression -> INTEGER BIN','expression',2,'p_expression_integer_base_BIN','server.py',29),
+  ('expression -> INTEGER HEX','expression',2,'p_expression_integer_base_HEX','server.py',34),
+  ('expression -> INTEGER OCT','expression',2,'p_expression_integer_base_OCT','server.py',39),
+  ('expression -> INTEGER ROM','expression',2,'p_expression_integer_base_ROM','server.py',44),
+  ('expression -> INTEGER INTEGER','expression',2,'p_expression_integer_integer','server.py',49),
 ]
