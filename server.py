@@ -1,7 +1,9 @@
 from flask import Flask, jsonify, redirect
 import random
+import json
 import ply.lex as lex
 import ply.yacc as yacc
+from lark import Lark
 
 # PARSE SIDE
 tokens = (
@@ -28,6 +30,7 @@ t_ignore = ' \t'
 
 lexer_errors = []
 parser_errors = []
+destino = ""
 
 def t_error(t):
     global lexer_errors
@@ -38,26 +41,36 @@ lexer = lex.lex()
 
 def p_expression_integer_base_BIN(p):
     '''expression   : INTEGER BIN DOLAR'''
+    global destino
+    destino = "BIN"
     integer = int(p[1])
     p[0] = bin(integer)[2:]
 
 def p_expression_integer_base_HEX(p):
     '''expression   : INTEGER HEX DOLAR'''
+    global destino
+    destino = "HEX"
     integer = int(p[1])
     p[0] = hex(integer)[2:]
 
 def p_expression_integer_base_OCT(p):
     '''expression   : INTEGER OCT DOLAR'''
+    global destino
+    destino = "OCT"
     integer = int(p[1])
     p[0] = oct(integer)[2:]
 
 def p_expression_integer_base_ROM(p):
     '''expression   : INTEGER ROM DOLAR'''
+    global destino
+    destino = "ROM"
     integer = int(p[1])
     p[0] = to_roman(integer) 
 
 def p_expression_integer_base_ALT(p):
     '''expression   : INTEGER ALT DOLAR'''
+    global destino
+    destino = "ALT"
     try:
         hora = int(p[1][:2])
         minutos = int(p[1][2:])
@@ -92,6 +105,8 @@ def p_expression_integer_base_RAND(p):
 
 def p_expression_integer_integer(p):
     '''expression : INTEGER INTEGER DOLAR'''
+    global destino
+    destino = "INTEGER"
     number = int(p[1])
     base = int(p[2])
     p[0] = convert_to_base_int(number, base)
@@ -139,14 +154,17 @@ def index():
 def parse(cadena):
     global lexer_errors
     global parser_errors
+    global destino
     lexer_errors = []
     parser_errors = []
+    destino = ""
     try:
         resultado = parser.parse(cadena.lower())
         return jsonify({
-            "resultado": resultado, 
             "Errores_lexicos": lexer_errors,
-            "errores_sintacticos": parser_errors
+            "Errores_sintacticos": parser_errors,
+            "Resultado": resultado,
+            "Destino": destino
         })
     except Exception as e:
         return jsonify({"error": str(e)})

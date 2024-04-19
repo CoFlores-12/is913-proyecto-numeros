@@ -4,8 +4,8 @@ from lark import Lark
 gramatica = '''
     start: expression
     
-    expression: INTEGER palabra_clave?
-              | INTEGER INTEGER
+    expression: INTEGER palabra_clave? signo_dolar?
+              | INTEGER INTEGER signo_dolar?
     
     palabra_clave: BIN
                  | HEX
@@ -22,6 +22,8 @@ gramatica = '''
     ALT: /alternativo+/
     RAND: /aleatorio+/
 
+    signo_dolar: "$"
+
     %ignore " \t"
 '''
 
@@ -29,7 +31,7 @@ gramatica = '''
 analizador = Lark(gramatica, start='start')
 
 # Analizar una cadena de entrada y obtener el árbol de análisis sintáctico
-cadena = "123hexadecimal"
+cadena = "123hexadecimal$"
 arbol = analizador.parse(cadena)
 
 print(arbol.pretty())

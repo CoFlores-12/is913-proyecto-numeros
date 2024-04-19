@@ -74,7 +74,7 @@
       const base = document.getElementById('base').value;
       const out = document.getElementById('out');
       try {
-        const response = await fetch(`/parse/${integer} ${base} $`, {
+        const response = await fetch(`/parse/${integer}${base}$`, {
           method: 'GET',
           headers: {}
         });
