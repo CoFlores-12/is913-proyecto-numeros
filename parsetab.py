@@ -27,11 +27,11 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> expression","S'",1,None,None,None),
-  ('expression -> INTEGER BIN DOLAR','expression',3,'p_expression_integer_base_BIN','server.py',40),
-  ('expression -> INTEGER HEX DOLAR','expression',3,'p_expression_integer_base_HEX','server.py',45),
-  ('expression -> INTEGER OCT DOLAR','expression',3,'p_expression_integer_base_OCT','server.py',50),
-  ('expression -> INTEGER ROM DOLAR','expression',3,'p_expression_integer_base_ROM','server.py',55),
-  ('expression -> INTEGER ALT DOLAR','expression',3,'p_expression_integer_base_ALT','server.py',60),
-  ('expression -> INTEGER RAND DOLAR','expression',3,'p_expression_integer_base_RAND','server.py',88),
-  ('expression -> INTEGER INTEGER DOLAR','expression',3,'p_expression_integer_integer','server.py',94),
+  ('expression -> INTEGER BIN DOLAR','expression',3,'p_expression_integer_base_BIN','test.py',38),
+  ('expression -> INTEGER HEX DOLAR','expression',3,'p_expression_integer_base_HEX','test.py',45),
+  ('expression -> INTEGER OCT DOLAR','expression',3,'p_expression_integer_base_OCT','test.py',52),
+  ('expression -> INTEGER ROM DOLAR','expression',3,'p_expression_integer_base_ROM','test.py',59),
+  ('expression -> INTEGER ALT DOLAR','expression',3,'p_expression_integer_base_ALT','test.py',66),
+  ('expression -> INTEGER RAND DOLAR','expression',3,'p_expression_integer_base_RAND','test.py',96),
+  ('expression -> INTEGER INTEGER DOLAR','expression',3,'p_expression_integer_integer','test.py',102),
 ]

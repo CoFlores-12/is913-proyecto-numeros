@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'BIN HEX INTEGER OCT ROMexpression   : INTEGER BIN\n                    | INTEGER HEX\n    \t\t\t\t| INTEGER OCT\n    \t\t\t    | INTEGER ROMexpression : INTEGER INTEGER'
+_lr_signature = 'ALT BIN DOLAR HEX INTEGER OCT RAND ROMexpression   : INTEGER BIN DOLARexpression   : INTEGER HEX DOLARexpression   : INTEGER OCT DOLARexpression   : INTEGER ROM DOLARexpression   : INTEGER ALT DOLARexpression   : INTEGER RAND DOLARexpression : INTEGER INTEGER DOLAR'
     
-_lr_action_items = {'INTEGER':([0,2,],[2,3,]),'$end':([1,3,4,5,6,7,],[0,-5,-1,-2,-3,-4,]),'BIN':([2,],[4,]),'HEX':([2,],[5,]),'OCT':([2,],[6,]),'ROM':([2,],[7,]),}
+_lr_action_items = {'INTEGER':([0,2,],[2,3,]),'$end':([1,10,11,12,13,14,15,16,],[0,-7,-1,-2,-3,-4,-5,-6,]),'BIN':([2,],[4,]),'HEX':([2,],[5,]),'OCT':([2,],[6,]),'ROM':([2,],[7,]),'ALT':([2,],[8,]),'RAND':([2,],[9,]),'DOLAR':([3,4,5,6,7,8,9,],[10,11,12,13,14,15,16,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -27,9 +27,11 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> expression","S'",1,None,None,None),
-  ('expression -> INTEGER BIN','expression',2,'p_expression_integer_base','parse.py',27),
-  ('expression -> INTEGER HEX','expression',2,'p_expression_integer_base','parse.py',28),
-  ('expression -> INTEGER OCT','expression',2,'p_expression_integer_base','parse.py',29),
-  ('expression -> INTEGER ROM','expression',2,'p_expression_integer_base','parse.py',30),
-  ('expression -> INTEGER INTEGER','expression',2,'p_expression_integer_integer','parse.py',36),
+  ('expression -> INTEGER BIN DOLAR','expression',3,'p_expression_integer_base_BIN','parse.py',39),
+  ('expression -> INTEGER HEX DOLAR','expression',3,'p_expression_integer_base_HEX','parse.py',46),
+  ('expression -> INTEGER OCT DOLAR','expression',3,'p_expression_integer_base_OCT','parse.py',53),
+  ('expression -> INTEGER ROM DOLAR','expression',3,'p_expression_integer_base_ROM','parse.py',60),
+  ('expression -> INTEGER ALT DOLAR','expression',3,'p_expression_integer_base_ALT','parse.py',67),
+  ('expression -> INTEGER RAND DOLAR','expression',3,'p_expression_integer_base_RAND','parse.py',97),
+  ('expression -> INTEGER INTEGER DOLAR','expression',3,'p_expression_integer_integer','parse.py',103),
 ]

@@ -3,7 +3,6 @@ import random
 import json
 import ply.lex as lex
 import ply.yacc as yacc
-from lark import Lark
 
 # PARSE SIDE
 tokens = (
@@ -160,11 +159,20 @@ def parse(cadena):
     destino = ""
     try:
         resultado = parser.parse(cadena.lower())
+        lexer.input(cadena.lower())
+        lexicoOut = []
+        for token in lexer:
+            lexicoOut.append({
+                "linea": token.lineno,
+                "tipo": token.type,
+                "valor": token.value
+            })
         return jsonify({
             "Errores_lexicos": lexer_errors,
             "Errores_sintacticos": parser_errors,
             "Resultado": resultado,
-            "Destino": destino
+            "Destino": destino,
+            "lexico": lexicoOut
         })
     except Exception as e:
         return jsonify({"error": str(e)})
