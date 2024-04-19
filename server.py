@@ -1,4 +1,5 @@
 from flask import Flask, jsonify, redirect
+import random
 import ply.lex as lex
 import ply.yacc as yacc
 
@@ -8,7 +9,10 @@ tokens = (
     'BIN',
     'HEX',
     'OCT',
-    'ROM'
+    'ROM',
+    'ALT',
+    'RAND',
+    'DOLAR'
 )
 
 t_INTEGER = r'\d+'
@@ -16,6 +20,9 @@ t_BIN = r'binario+'
 t_HEX = r'hexadecimal+'
 t_OCT = r'octal+'
 t_ROM = r'romano+'
+t_ALT = r'alternativo+'
+t_RAND = r'aleatorio+'
+t_DOLAR = r'\$'
 
 t_ignore = ' \t'
 
@@ -30,27 +37,61 @@ def t_error(t):
 lexer = lex.lex()
 
 def p_expression_integer_base_BIN(p):
-    '''expression   : INTEGER BIN'''
+    '''expression   : INTEGER BIN DOLAR'''
     integer = int(p[1])
     p[0] = bin(integer)[2:]
 
 def p_expression_integer_base_HEX(p):
-    '''expression   : INTEGER HEX'''
+    '''expression   : INTEGER HEX DOLAR'''
     integer = int(p[1])
     p[0] = hex(integer)[2:]
 
 def p_expression_integer_base_OCT(p):
-    '''expression   : INTEGER OCT'''
+    '''expression   : INTEGER OCT DOLAR'''
     integer = int(p[1])
     p[0] = oct(integer)[2:]
 
 def p_expression_integer_base_ROM(p):
-    '''expression   : INTEGER ROM'''
+    '''expression   : INTEGER ROM DOLAR'''
     integer = int(p[1])
     p[0] = to_roman(integer) 
 
+def p_expression_integer_base_ALT(p):
+    '''expression   : INTEGER ALT DOLAR'''
+    try:
+        hora = int(p[1][:2])
+        minutos = int(p[1][2:])
+        if hora == 0:
+            hora_12h = "12"
+            designacion = "AM"
+        elif hora < 12:
+            hora_12h = str(hora)
+            designacion = "AM"
+        elif hora == 12:
+            hora_12h = "12"
+            designacion = "PM"
+        else:
+            hora_12h = str(hora - 12)
+            designacion = "PM"
+            
+        if minutos < 10:
+            minutos = "0" + str(minutos)
+        else:
+            minutos = str(minutos)
+            
+        hora_12h += ":" + minutos + " " + designacion
+        p[0] = hora_12h
+    except ValueError as e:
+        p[0] = "Error: " + str(e)
+
+def p_expression_integer_base_RAND(p):
+    '''expression   : INTEGER RAND DOLAR'''
+    conversiones = [p_expression_integer_base_BIN, p_expression_integer_base_HEX, p_expression_integer_base_OCT, p_expression_integer_base_ROM, p_expression_integer_base_ALT]
+    conversion_aleatoria = random.choice(conversiones[:-1])
+    conversion_aleatoria(p)
+
 def p_expression_integer_integer(p):
-    '''expression : INTEGER INTEGER'''
+    '''expression : INTEGER INTEGER DOLAR'''
     number = int(p[1])
     base = int(p[2])
     p[0] = convert_to_base_int(number, base)

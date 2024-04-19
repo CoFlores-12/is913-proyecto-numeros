@@ -3,18 +3,23 @@ Created by PLY version 3.11 (http://www.dabeaz.com/ply)
 Grammar
 
 Rule 0     S' -> expression
-Rule 1     expression -> INTEGER BIN
-Rule 2     expression -> INTEGER HEX
-Rule 3     expression -> INTEGER OCT
-Rule 4     expression -> INTEGER ROM
-Rule 5     expression -> INTEGER INTEGER
+Rule 1     expression -> INTEGER BIN DOLAR
+Rule 2     expression -> INTEGER HEX DOLAR
+Rule 3     expression -> INTEGER OCT DOLAR
+Rule 4     expression -> INTEGER ROM DOLAR
+Rule 5     expression -> INTEGER ALT DOLAR
+Rule 6     expression -> INTEGER RAND DOLAR
+Rule 7     expression -> INTEGER INTEGER DOLAR
 
 Terminals, with rules where they appear
 
+ALT                  : 5
 BIN                  : 1
+DOLAR                : 1 2 3 4 5 6 7
 HEX                  : 2
-INTEGER              : 1 2 3 4 5 5
+INTEGER              : 1 2 3 4 5 6 7 7
 OCT                  : 3
+RAND                 : 6
 ROM                  : 4
 error                : 
 
@@ -27,11 +32,13 @@ Parsing method: LALR
 state 0
 
     (0) S' -> . expression
-    (1) expression -> . INTEGER BIN
-    (2) expression -> . INTEGER HEX
-    (3) expression -> . INTEGER OCT
-    (4) expression -> . INTEGER ROM
-    (5) expression -> . INTEGER INTEGER
+    (1) expression -> . INTEGER BIN DOLAR
+    (2) expression -> . INTEGER HEX DOLAR
+    (3) expression -> . INTEGER OCT DOLAR
+    (4) expression -> . INTEGER ROM DOLAR
+    (5) expression -> . INTEGER ALT DOLAR
+    (6) expression -> . INTEGER RAND DOLAR
+    (7) expression -> . INTEGER INTEGER DOLAR
 
     INTEGER         shift and go to state 2
 
@@ -45,50 +52,117 @@ state 1
 
 state 2
 
-    (1) expression -> INTEGER . BIN
-    (2) expression -> INTEGER . HEX
-    (3) expression -> INTEGER . OCT
-    (4) expression -> INTEGER . ROM
-    (5) expression -> INTEGER . INTEGER
+    (1) expression -> INTEGER . BIN DOLAR
+    (2) expression -> INTEGER . HEX DOLAR
+    (3) expression -> INTEGER . OCT DOLAR
+    (4) expression -> INTEGER . ROM DOLAR
+    (5) expression -> INTEGER . ALT DOLAR
+    (6) expression -> INTEGER . RAND DOLAR
+    (7) expression -> INTEGER . INTEGER DOLAR
 
     BIN             shift and go to state 4
     HEX             shift and go to state 5
     OCT             shift and go to state 6
     ROM             shift and go to state 7
+    ALT             shift and go to state 8
+    RAND            shift and go to state 9
     INTEGER         shift and go to state 3
 
 
 state 3
 
-    (5) expression -> INTEGER INTEGER .
+    (7) expression -> INTEGER INTEGER . DOLAR
 
-    $end            reduce using rule 5 (expression -> INTEGER INTEGER .)
+    DOLAR           shift and go to state 10
 
 
 state 4
 
-    (1) expression -> INTEGER BIN .
+    (1) expression -> INTEGER BIN . DOLAR
 
-    $end            reduce using rule 1 (expression -> INTEGER BIN .)
+    DOLAR           shift and go to state 11
 
 
 state 5
 
-    (2) expression -> INTEGER HEX .
+    (2) expression -> INTEGER HEX . DOLAR
 
-    $end            reduce using rule 2 (expression -> INTEGER HEX .)
+    DOLAR           shift and go to state 12
 
 
 state 6
 
-    (3) expression -> INTEGER OCT .
+    (3) expression -> INTEGER OCT . DOLAR
 
-    $end            reduce using rule 3 (expression -> INTEGER OCT .)
+    DOLAR           shift and go to state 13
 
 
 state 7
 
-    (4) expression -> INTEGER ROM .
+    (4) expression -> INTEGER ROM . DOLAR
 
-    $end            reduce using rule 4 (expression -> INTEGER ROM .)
+    DOLAR           shift and go to state 14
+
+
+state 8
+
+    (5) expression -> INTEGER ALT . DOLAR
+
+    DOLAR           shift and go to state 15
+
+
+state 9
+
+    (6) expression -> INTEGER RAND . DOLAR
+
+    DOLAR           shift and go to state 16
+
+
+state 10
+
+    (7) expression -> INTEGER INTEGER DOLAR .
+
+    $end            reduce using rule 7 (expression -> INTEGER INTEGER DOLAR .)
+
+
+state 11
+
+    (1) expression -> INTEGER BIN DOLAR .
+
+    $end            reduce using rule 1 (expression -> INTEGER BIN DOLAR .)
+
+
+state 12
+
+    (2) expression -> INTEGER HEX DOLAR .
+
+    $end            reduce using rule 2 (expression -> INTEGER HEX DOLAR .)
+
+
+state 13
+
+    (3) expression -> INTEGER OCT DOLAR .
+
+    $end            reduce using rule 3 (expression -> INTEGER OCT DOLAR .)
+
+
+state 14
+
+    (4) expression -> INTEGER ROM DOLAR .
+
+    $end            reduce using rule 4 (expression -> INTEGER ROM DOLAR .)
+
+
+state 15
+
+    (5) expression -> INTEGER ALT DOLAR .
+
+    $end            reduce using rule 5 (expression -> INTEGER ALT DOLAR .)
+
+
+state 16
+
+    (6) expression -> INTEGER RAND DOLAR .
+
+    $end            reduce using rule 6 (expression -> INTEGER RAND DOLAR .)
 
